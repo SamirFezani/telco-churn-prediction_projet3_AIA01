@@ -10,7 +10,7 @@ sample_path = os.path.join(BASE_DIR, "tests", "sample_telco.csv")
 if os.path.exists(main_path):
     data_path = main_path
 else:
-    print(f"⚠️ Fichier principal non trouvé, utilisation du sample : {sample_path}")
+    print(f" Fichier principal non trouvé, utilisation du sample : {sample_path}")
     data_path = sample_path
 
 df = pd.read_csv(data_path)
