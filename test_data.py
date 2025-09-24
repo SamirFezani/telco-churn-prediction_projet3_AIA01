@@ -1,27 +1,27 @@
 # test_data.py
 import sys
 import pandas as pd
+import os
 
-# Vérifier l'interpréteur Python
-print("Python utilisé :", sys.executable)
+BASE_DIR = os.path.dirname(__file__)  # dossier contenant test_data.py (racine du repo)
+main_path = os.path.join(BASE_DIR, "data", "raw", "WA_Fn-UseC_-Telco-Customer-Churn.csv")
+sample_path = os.path.join(BASE_DIR, "tests", "sample_telco.csv")
 
-# Vérifier la version de pandas
-print("Version de pandas :", pd.__version__)
+if os.path.exists(main_path):
+    data_path = main_path
+else:
+    print(f"⚠️ Fichier principal non trouvé, utilisation du sample : {sample_path}")
+    data_path = sample_path
 
-# Chemin du dataset
-data_path = "data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv"
+df = pd.read_csv(data_path)
 
+def test_not_empty():
+    assert not df.empty
 
-# Charger le dataset
-try:
-    df = pd.read_csv(data_path)
-    print("✅ Dataset chargé avec succès !")
-except FileNotFoundError:
-    print(f"❌ Fichier non trouvé à {data_path}")
-    exit()
-
-# Infos du dataset
-print("\nShape du dataset :", df.shape)
-print(df.head())
-print(df.info())
-print(df.isnull().sum())
+def test_expected_columns():
+    expected = [
+        "gender","SeniorCitizen","Partner","Dependents","tenure",
+        "PhoneService","InternetService","MonthlyCharges","TotalCharges","Churn"
+    ]
+    for col in expected:
+        assert col in df.columns
